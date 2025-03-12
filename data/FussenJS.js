@@ -106,8 +106,8 @@ function sendPower() {
 }
 
 function showPower() {
-  sendText = (power>0) ? "⚡" : "⭕";
-  document.getElementById("powerButton").innerHTML = sendText;
+  var showText = (power>0) ? "⚡" : "⭕";
+  document.getElementById("powerButton").innerHTML = showText;
 }
 
 
@@ -299,5 +299,6 @@ connection.onmessage = function (event) {
 connection.onclose = function () {
   console.log('WebSocket connection closed');
   power = 0;
+  sendPower()
   showPower();
 }

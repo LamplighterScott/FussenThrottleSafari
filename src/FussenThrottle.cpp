@@ -28,11 +28,11 @@ typedef struct {
   char type[2];  // T = turnout/semaphore, C = decoupler, L = Light
   char icon0[8];  // icons for state 0 (closed) and 1 (thrown)
   char icon1[8];
-  byte iFlag;  // See DCC++ Outlets for bits explanation, Fuseen Throttle uses bits 3-6 to communicate output type to DCC++ in Load Outputs
+  byte iFlag;  // See DCC++ Outlets for bits explanation, Fussen Throttle uses bits 3-6 to communicate output type to DCC++ in Load Outputs
               // bit0 not used in Fussen Throttle, bit1: 0=hide, 1=show; bit2: 0=disabled or rund, 1= enable or gerade
               // bit no. (int value) T=3(8), D=4(16), S=5(32), L=6(64)
 } tData;
-/* Format {Switch number, pin number, name, type, X, X, X} */
+/* Format {device ID in mega, pin number, name, type, X, X, X} must sync with total outputs and tOrder array*/
 tData ttt[]= {
   {0, "022", "1 To Inner", "T", "\U00002196\U0000FE0F", "\U00002B06\U0000FE0F", 10},
   {1, "024", "2 To Outer", "T", "\U00002197\U0000FE0F", "\U00002B06\U0000FE0F", 10},
@@ -42,15 +42,38 @@ tData ttt[]= {
   {5, "032", "6 Cross to Yard", "T", "\U0001F504", "\U0001F500", 10},
   {6, "034", "7 Yard 2-2", "T", "\U00002197\U0000FE0F", "\U00002B06\U0000FE0F", 10},
   {7, "036", "8 Sidetrack", "T", "\U00002197\U0000FE0F", "\U00002B06\U0000FE0F", 10},
-  {8, "038", "A Decoupler 1A", "D", "\U0001F9F2", "\U0001F9F2", 18},
-  {9, "040", "B Decoupler 1B", "D", "\U0001F9F2", "\U0001F9F2", 18},
-  {10, "042", "C Decoupler 2A", "D", "\U0001F9F2", "\U0001F9F2", 18},
-  {11, "044", "D Decoupler 2B", "D", "\U0001F9F2", "\U0001F9F2", 18},
+  {8, "038", "Decoupler 1A", "D", "\U0001F9F2", "\U0001F9F2", 18},
+  {9, "040", "Decoupler 1B", "D", "\U0001F9F2", "\U0001F9F2", 18},
+  {10, "042", "Decoupler 2A", "D", "\U0001F9F2", "\U0001F9F2", 18},
+  {11, "044", "Decoupler 2B", "D", "\U0001F9F2", "\U0001F9F2", 18},
   {12, "046", "Semaphore", "S", "\U0001F6A5", "\U0001F6A6", 34},
-  {13, "048", "Castle", "L", "\U0001F3F0", "\U0001F3F0", 66},
-  {14, "049", "Garage", "L", "\U0001F3F0", "\U0001F3F0", 66}
+  {13, "048", "Castle Light", "L", "\U0001F3F0", "\U0001F3F0", 66},
+  {14, "049", "Shed Light", "L", "\U0001F3F0", "\U0001F3F0", 66},
+  {15, "052", "Train Shed", "T", "\U00002196\U0000FE0F", "\U00002B06\U0000FE0F", 10},
+  {16, "122", "Stn In A", "T", "\U00002196\U0000FE0F", "\U00002B06\U0000FE0F", 10},
+  {17, "124", "Stn In B", "T", "\U00002196\U0000FE0F", "\U00002B06\U0000FE0F", 10},
+  {18, "126", "Stn Out A", "T", "\U00002196\U0000FE0F", "\U00002B06\U0000FE0F", 10},
+  {19, "128", "Stn Out B", "T", "\U00002196\U0000FE0F", "\U00002B06\U0000FE0F", 10},
+  {20, "130", "Stn Out C", "T", "\U00002196\U0000FE0F", "\U00002B06\U0000FE0F", 10},
+  {21, "132", "Stn Our D", "T", "\U00002196\U0000FE0F", "\U00002B06\U0000FE0F", 10},
+  {22, "134", "Round Table N", "T", "\U00002196\U0000FE0F", "\U00002B06\U0000FE0F", 10},
+  {23, "136", "Maintenance", "T", "\U00002196\U0000FE0F", "\U00002B06\U0000FE0F", 10},
+  {24, "222", "Round Table S", "T", "\U00002196\U0000FE0F", "\U00002B06\U0000FE0F", 10},
+  {25, "224", "Engine Shed", "T", "\U00002196\U0000FE0F", "\U00002B06\U0000FE0F", 10},
+  {26, "250", "Round Table", "S", "\U00002196\U0000FE0F", "\U00002B06\U0000FE0F", 10},
+  {27, "252", "Eng Shed Doors", "S", "\U00002196\U0000FE0F", "\U00002B06\U0000FE0F", 10},
+  {28, "226", "Tank Farm", "T", "\U00002196\U0000FE0F", "\U00002B06\U0000FE0F", 10},
+  {29, "228", "Factory Siding", "T", "\U00002196\U0000FE0F", "\U00002B06\U0000FE0F", 10},
+  {30, "230", "Bypass", "T", "\U00002196\U0000FE0F", "\U00002B06\U0000FE0F", 10},
+  {31, "232", "Return High", "T", "\U00002196\U0000FE0F", "\U00002B06\U0000FE0F", 10},
+  {32, "234", "Loop Low", "T", "\U00002196\U0000FE0F", "\U00002B06\U0000FE0F", 10},
+  {33, "236", "Return Low", "T", "\U00002196\U0000FE0F", "\U00002B06\U0000FE0F", 10},
+  {34, "238", "Loop High", "T", "\U00002196\U0000FE0F", "\U00002B06\U0000FE0F", 10},
+  {35, "240", "Coal Loading A", "T", "\U00002196\U0000FE0F", "\U00002B06\U0000FE0F", 10},
+  {36, "242", "Coal Loading B", "T", "\U00002196\U0000FE0F", "\U00002B06\U0000FE0F", 10},
+  {37, "244", "Coal Loading C", "T", "\U00002196\U0000FE0F", "\U00002B06\U0000FE0F", 10}
 };
-const int totalOutputs = 15;  // Must include the zero row at the end
+const int totalOutputs = 38;  // Must include the zero row at the end
 
 typedef struct {
   const int id;  // system id number w/o system and type chars, used by MEGA
@@ -74,7 +97,7 @@ cData ccc[]= {
 };
 const int totalLocos = 10;  // Must include the zero row at the end
 
-int tOrder[15] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14};
+int tOrder[38] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37};
 int cOrder[10] = {0,1,2,3,4,5,6,7,8,9};
 int LocoState[10][7]={{0,0,0,0,0,0,0},{0,0,0,0,0,0,0},{0,0,0,0,0,0,0},{0,0,0,0,0,0,0},{0,0,0,0,0,0,0},{0,0,0,0,0,0,0},{0,0,0,0,0,0,0},{0,0,0,0,0,0,0},{0,0,0,0,0,0,0},{0,0,0,0,0,0,0}}; // Set-up Function states [number of], (light, beam, cab 1, cab 2, shunt, speed, direction)
 int locoNumber = 0;  // global variable for current target loco number
@@ -126,7 +149,7 @@ void setup(void){
   startWiFi();
   startFS();
 
-  retrieveSettings();
+  // retrieveSettings();
   delay(10);
 
   startWebSocket();
